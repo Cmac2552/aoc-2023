@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -76,7 +77,7 @@ func main() {
 	counter := 1
 	for i := len(hands) - 1; i >= 0; i-- {
 		if len(hands[i]) > 0 {
-			hands[i] = quickSort(hands[i], 0, len(hands[i])-1)
+			slices.SortFunc(hands[i], stronger)
 
 			for j := len(hands[i]) - 1; j >= 0; j-- {
 				wager, err := strconv.Atoi(hands[i][j].wager)
@@ -94,30 +95,7 @@ func main() {
 
 }
 
-func partition(arr []handAndWager, low, high int) ([]handAndWager, int) {
-	pivot := arr[high]
-	i := low
-	for j := low; j < high; j++ {
-		if stronger(arr[j], pivot) {
-			arr[i], arr[j] = arr[j], arr[i]
-			i++
-		}
-	}
-	arr[i], arr[high] = arr[high], arr[i]
-	return arr, i
-}
-
-func quickSort(arr []handAndWager, low, high int) []handAndWager {
-	if low < high {
-		var p int
-		arr, p = partition(arr, low, high)
-		arr = quickSort(arr, low, p-1)
-		arr = quickSort(arr, p+1, high)
-	}
-	return arr
-}
-
-func stronger(hand1 handAndWager, hand2 handAndWager) bool {
+func stronger(hand1 handAndWager, hand2 handAndWager) int {
 	cardMap := map[string]int{
 		"A": 13,
 		"K": 12,
@@ -138,9 +116,13 @@ func stronger(hand1 handAndWager, hand2 handAndWager) bool {
 
 	for i := 0; i < len(hand1.hand); i++ {
 		if cardMap[string(cards1[i])] != cardMap[string(cards2[i])] {
-			return cardMap[string(cards1[i])] > cardMap[string(cards2[i])]
+			if cardMap[string(cards1[i])] > cardMap[string(cards2[i])] {
+				return -1
+			} else {
+				return 1
+			}
+
 		}
 	}
-	return false
-
+	return 0
 }
