@@ -89,29 +89,6 @@ func main() {
 
 }
 
-// func partition(arr []handAndWager, low, high int) ([]handAndWager, int) {
-// 	pivot := arr[high]
-// 	i := low
-// 	for j := low; j < high; j++ {
-// 		if stronger(arr[j], pivot) {
-// 			arr[i], arr[j] = arr[j], arr[i]
-// 			i++
-// 		}
-// 	}
-// 	arr[i], arr[high] = arr[high], arr[i]
-// 	return arr, i
-// }
-
-// func quickSort(arr []handAndWager, low, high int) []handAndWager {
-// 	if low < high {
-// 		var p int
-// 		arr, p = partition(arr, low, high)
-// 		arr = quickSort(arr, low, p-1)
-// 		arr = quickSort(arr, p+1, high)
-// 	}
-// 	return arr
-// }
-
 func stronger(hand1 handAndWager, hand2 handAndWager) int {
 	cardMap := map[string]int{
 		"A": 13,
